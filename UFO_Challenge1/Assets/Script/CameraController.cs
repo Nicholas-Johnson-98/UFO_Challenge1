@@ -14,6 +14,13 @@ public class CameraController : MonoBehaviour
         offset = transform.position - player.transform.position; 
     }
 
+    void Fixedupdate()
+    {
+
+        if (Input.GetKey("escape"))
+            Application.Quit();
+
+    }
     // Update is called once per frame
     void LateUpdate()
     {

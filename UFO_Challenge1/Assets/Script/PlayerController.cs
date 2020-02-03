@@ -8,16 +8,21 @@ public class PlayerController : MonoBehaviour
     public float speed;             
     public Text CountText;
     public Text WinText;
+    public Text LivesText;
 
     private Rigidbody2D rb2d;
-    private int count; 
+    private int count;
+    private int Lives;
+
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         count = 0;
+        Lives = 3;
         WinText.text = "";
-        SetCountText();  
+        SetCountText();
+        SetLivesText();
     }
 
     void FixedUpdate()
@@ -33,9 +38,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("escape"))
             Application.Quit();
 
-
     }
-    
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("PickUp"))
@@ -47,17 +51,31 @@ public class PlayerController : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy"))
         {
             other.gameObject.SetActive(false);
-            count = count - 1;
-            SetCountText();
+            Lives = Lives - 1;
+            SetLivesText();
+        }
+        if (count == 12)
+        {
+            transform.position = new Vector2(0.0f, 46.0f);
         }
     }
 
     void SetCountText()
     {
         CountText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        if (count >= 20)
         {
             WinText.text = "You win! Game created by Nicholas Johnson!";
+        }
+    }
+
+    void SetLivesText()
+    {
+        LivesText.text = "Lives: " + Lives.ToString();
+        if (Lives <= 0)
+        {
+            WinText.text = "You Lose!";
+            Destroy(gameObject);
         }
     }
 }
